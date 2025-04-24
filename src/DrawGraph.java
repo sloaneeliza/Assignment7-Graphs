@@ -32,7 +32,6 @@ public class DrawGraph {
 
     private static void createAndDisplayGraph(List<VertexData> vertices) {
         Graph graph = new SingleGraph("Circular Graph");
-        // Set better visual attributes
         graph.setAttribute("ui.stylesheet",
                 "node { size: 30px; fill-color: #3d8bff; text-size: 20; }" +
                         "edge { fill-color: #666; size: 2px; }");
@@ -42,17 +41,14 @@ public class DrawGraph {
         int n = vertices.size();
         if (n == 0) return;
 
-        // Add all nodes with labels
         for (VertexData vd : vertices) {
             Node node = graph.addNode(vd.letter);
             node.setAttribute("ui.label", vd.letter);
-            // Set fixed positions for better layout
             double angle = 2 * Math.PI * vertices.indexOf(vd) / n;
             node.setAttribute("x", Math.cos(angle));
             node.setAttribute("y", Math.sin(angle));
         }
 
-        // Add edges with directional arrows
         for (int i = 0; i < n; i++) {
             String source = vertices.get(i).letter;
             int x = vertices.get(i).x;
@@ -61,12 +57,11 @@ public class DrawGraph {
             int leftPos = (i - x) % n;
             if (leftPos < 0) leftPos += n;
 
-            // Right edge
+
             String rightTarget = vertices.get(rightPos).letter;
             graph.addEdge(source + "→" + rightTarget, source, rightTarget, true)
                     .setAttribute("ui.label", "x=" + x);
 
-            // Left edge (if different from right)
             if (rightPos != leftPos) {
                 String leftTarget = vertices.get(leftPos).letter;
                 graph.addEdge(source + "←" + leftTarget, source, leftTarget, true)
@@ -74,10 +69,10 @@ public class DrawGraph {
             }
         }
 
-        // Display with better viewer settings
+
         Viewer viewer = graph.display();
         viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
-        viewer.enableAutoLayout(); // Enable automatic layout
+        viewer.enableAutoLayout();
     }
 
     static class VertexData {
